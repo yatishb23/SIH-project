@@ -65,29 +65,22 @@ export async function login(
   email: string,
   password: string,
 ): Promise<{ success: boolean; user?: User; error?: string }> {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-
-  // Mock authentication logic
-  const user = mockUsers.find((u) => u.email === email)
-
-  if (!user) {
-    return { success: false, error: "User not found" }
+  try {
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+    if (data.success && data.user) {
+      // Optionally set cookie here if needed
+      return { success: true, user: data.user };
+    } else {
+      return { success: false, error: data.message || "Login failed" };
+    }
+  } catch (err) {
+    return { success: false, error: "Network error" };
   }
-
-  // In real implementation, verify password hash
-  if (password !== "password123") {
-    return { success: false, error: "Invalid password" }
-  }
-
-  // Update last login
-  user.lastLogin = new Date()
-
-  // Set authentication cookie
-  const authToken = btoa(JSON.stringify({ userId: user.id, timestamp: Date.now() }))
-  setCookie(AUTH_COOKIE_NAME, authToken)
-
-  return { success: true, user }
 }
 
 export async function logout(): Promise<void> {
@@ -118,29 +111,20 @@ export async function register(
   name: string,
   role: "teacher" | "counselor" = "teacher",
 ): Promise<{ success: boolean; user?: User; error?: string }> {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-
-  // Check if user already exists
-  if (mockUsers.find((u) => u.email === email)) {
-    return { success: false, error: "User already exists" }
+  try {
+    const res = await fetch("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password, name, role }),
+    });
+    const data = await res.json();
+    if (data.success && data.user) {
+      // Optionally set cookie here if needed
+      return { success: true, user: data.user };
+    } else {
+      return { success: false, error: data.message || "Registration failed" };
+    }
+  } catch (err) {
+    return { success: false, error: "Network error" };
   }
-
-  // Create new user
-  const newUser: User = {
-    id: (mockUsers.length + 1).toString(),
-    email,
-    name,
-    role,
-    createdAt: new Date(),
-    lastLogin: new Date(),
-  }
-
-  mockUsers.push(newUser)
-
-  // Set authentication cookie
-  const authToken = btoa(JSON.stringify({ userId: newUser.id, timestamp: Date.now() }))
-  setCookie(AUTH_COOKIE_NAME, authToken)
-
-  return { success: true, user: newUser }
 }
