@@ -57,7 +57,7 @@ export default function RegisterPage() {
       const result = await register(formData.email, formData.password, formData.name, formData.role)
 
       if (result.success) {
-        router.push("/dashboard")
+        router.push("/data-import")
       } else {
         setError(result.error || "Registration failed")
       }

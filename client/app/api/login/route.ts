@@ -24,6 +24,18 @@ export async function POST(req: NextRequest) {
   // Optionally, remove password from response
   const { password: _, ...userData } = user;
 
-  // TODO: Set authentication cookie or token here if needed
-  return NextResponse.json({ success: true, user: userData });
+  // Generate a simple token (for demo, use JWT in production)
+  const tokenPayload = { userId: user.id, email: user.email, timestamp: Date.now() };
+  const token = Buffer.from(JSON.stringify(tokenPayload)).toString('base64');
+
+  // Set cookie for 30 days
+  const response = NextResponse.json({ success: true, user: userData });
+  response.cookies.set('student-dashboard-auth', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    path: '/',
+    maxAge: 2 * 24 * 60 * 60, // 2 days in seconds
+  });
+  return response;
 }

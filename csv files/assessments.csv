@@ -1,0 +1,14 @@
+id,studentId,subject,assessmentType,score,maxScore,date,weight
+401,201,Mathematics,Quiz 1,88,100,2025-08-15T00:00:00Z,0.2
+402,202,Mathematics,Quiz 1,95,100,2025-08-15T00:00:00Z,0.2
+403,203,Physics,Quiz 1,75,100,2025-08-16T00:00:00Z,0.2
+404,204,Physics,Quiz 1,82,100,2025-08-16T00:00:00Z,0.2
+405,201,Mathematics,Assignment 1,75,100,2025-08-28T00:00:00Z,0.3
+406,202,Mathematics,Assignment 1,98,100,2025-08-28T00:00:00Z,0.3
+407,203,Physics,Assignment 1,72,100,2025-08-29T00:00:00Z,0.3
+408,204,Physics,Assignment 1,80,100,2025-08-29T00:00:00Z,0.3
+409,205,Mathematics,Quiz 1,85,100,2025-08-29T00:00:00Z,0.2
+410,201,Mathematics,Mid-Term Exam,58,100,2025-09-12T00:00:00Z,0.5
+411,202,Mathematics,Mid-Term Exam,96,100,2025-09-12T00:00:00Z,0.5
+412,203,Physics,Mid-Term Exam,68,100,2025-09-13T00:00:00Z,0.5
+413,204,Physics,Mid-Term Exam,81,100,2025-09-13T00:00:00Z,0.5

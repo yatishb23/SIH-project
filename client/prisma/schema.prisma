@@ -1,6 +1,4 @@
-// Prisma schema for User with role
-// You need to set up your DATABASE_URL in .env
-
+// This is your full prisma schema
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -11,12 +9,59 @@ generator client {
 }
 
 model User {
+  id          Int          @id @default(autoincrement())
+  email       String       @unique
+  password    String
+  name        String?
+  role        Role         @default(USER)
+  createdAt   DateTime     @default(now())
+  students    Student[]    @relation("UserToStudent")
+  attendances Attendance[] @relation("UserToAttendance")
+  assessments Assessment[] @relation("UserToAssessment")
+}
+
+model Student {
+  id             Int          @id @default(autoincrement())
+  name           String
+  email          String       @unique
+  grade          String
+  enrollmentDate DateTime
+  mentorId       Int?
+  guardianEmail  String?
+  teacherId      Int
+  teacher        User         @relation("UserToStudent", fields: [teacherId], references: [id])
+  attendances    Attendance[]
+  assessments    Assessment[]
+}
+
+model Attendance {
   id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  name      String?
-  role      Role     @default(USER)
-  createdAt DateTime @default(now())
+  studentId Int
+  teacherId Int
+  date      DateTime
+  status    String
+  notes     String?
+  student   Student  @relation(fields: [studentId], references: [id])
+  teacher   User     @relation("UserToAttendance", fields: [teacherId], references: [id])
+
+  // CRITICAL CHANGE: This constraint is explicitly named
+  @@unique([studentId, date], name: "studentDate")
+}
+
+model Assessment {
+  id             Int      @id @default(autoincrement())
+  studentId      Int
+  teacherId      Int
+  subject        String
+  assessmentType String
+  score          Float
+  maxScore       Float
+  date           DateTime
+  weight         Float?
+  student        Student  @relation(fields: [studentId], references: [id])
+  teacher        User     @relation("UserToAssessment", fields: [teacherId], references: [id])
+
+  @@unique([studentId, subject, date])
 }
 
 enum Role {
