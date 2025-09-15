@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+# AI-Based Dropout Prediction Platform
+
+An advanced web application for predicting student dropout risk, managing attendance, assessments, and notifications, built with Next.js, TypeScript, and Prisma.
+
+## Features
+
+- **Student Management:** Import, view, and manage student records.
+- **Attendance Tracking:** Upload and track attendance data, with upsert logic to avoid duplicates.
+- **Assessment Management:** Import and analyze student assessments.
+- **Risk Assessment:** AI-based dropout risk prediction and dashboard overview.
+- **Alert & Notification System:** Automated alerts for at-risk students and notification center for staff.
+- **Authentication & Protected Routes:** Secure login/register and role-based access.
+- **Modern UI:** Responsive, accessible, and themeable interface using custom UI components.
+
+## Tech Stack
+
+- **Frontend:** Next.js (App Router), React, TypeScript
+- **Backend:** Next.js API routes, Prisma ORM
+- **Database:** PostgreSQL
+- **Styling:** Tailwind CSS, PostCSS
+- **Authentication:** Custom hooks and logic
+- **CSV Import:** Robust CSV parsing and validation
+
+## Project Structure
+
+- `app/` - Next.js app pages and routes (dashboard, login, data import, etc.)
+- `components/` - Reusable UI and feature components
+- `hooks/` - Custom React hooks (e.g., authentication)
+- `lib/` - Utility libraries (CSV parser, risk assessment, notifications, Prisma client)
+- `prisma/` - Prisma schema and migrations
+- `public/` - Static assets
 
 ## Getting Started
 
-First, run the development server:
+1. **Install dependencies:**
+	```bash
+	npm install
+	```
+2. **Set up environment variables:**
+	- Copy `.env.example` to `.env` and set your `DATABASE_URL` for PostgreSQL.
+3. **Run database migrations:**
+	```bash
+	npx prisma migrate dev
+	```
+4. **Start the development server:**
+	```bash
+	npm run dev
+	```
+5. **Open the app:**
+	Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Usage
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Import Data:** Use the dashboard to upload CSV files for students, attendance, and assessments. The system validates and upserts records.
+- **View Dashboard:** See student risk levels, attendance stats, and recent alerts.
+- **Manage Notifications:** Get notified about at-risk students and important events.
+- **Authentication:** Register/login as a teacher, admin, or manager to access protected features.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Code Quality:** ESLint and TypeScript are used for static analysis and type safety.
+- **UI Components:** Custom components in `components/ui/` for consistent design.
+- **Prisma ORM:** Models for User, Student, Attendance, Assessment, with composite unique constraints for upsert logic.
 
-## Learn More
+## Contributing
 
-To learn more about Next.js, take a look at the following resources:
+Contributions are welcome! Please open issues or pull requests for bug fixes, improvements, or new features.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This project is licensed under the MIT License.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+For more details, see the source code and documentation in each folder.
