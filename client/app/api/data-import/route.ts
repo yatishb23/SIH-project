@@ -12,6 +12,7 @@ interface StudentImport {
   teacherId: number;
 }
 
+
 interface AttendanceImport {
   studentId: number; // This is the ID from the CSV
   date: string;

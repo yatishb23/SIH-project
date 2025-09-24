@@ -27,6 +27,8 @@ import {
   Mail,
   LogOut,
   User,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { useAuth } from "@/hooks/use-auth"
@@ -44,6 +46,7 @@ const navigation = [
 export function Navigation() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const [collapsed, setCollapsed] = useState(false) // ✅ Collapsed state
   const { user, logout } = useAuth()
 
   const handleLogout = async () => {
@@ -64,11 +67,12 @@ export function Navigation() {
                 ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
               mobile && "text-base",
+              collapsed && !mobile && "justify-center gap-0 px-2"
             )}
             onClick={() => mobile && setOpen(false)}
           >
             <item.icon className="h-4 w-4" />
-            {item.name}
+            {!collapsed && item.name}
           </Link>
         )
       })}
@@ -78,22 +82,43 @@ export function Navigation() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
-        <div className="flex flex-col flex-grow pt-5 bg-card border-r overflow-y-auto">
-          <div className="flex items-center flex-shrink-0 px-4">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <BarChart3 className="h-5 text-primary-foreground" />
+      <div
+        className={cn(
+          "hidden md:flex md:flex-col md:fixed md:inset-y-0 bg-card border-r overflow-y-auto transition-all duration-300",
+          collapsed ? "md:w-16" : "md:w-64"
+        )}
+      >
+        {/* Top Branding + Collapse Button */}
+        <div className="flex items-center justify-between px-4 pt-5">
+          {!collapsed && (
+            <div className="flex items-center">
+              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <BarChart3 className="h-5 text-primary-foreground" />
+              </div>
+              <span className="ml-2 text-xl font-bold text-foreground">EduGuard</span>
             </div>
-            <span className="ml-2 text-xl font-bold text-foreground">EduGuard</span>
-          </div>
-          <div className="mt-8 flex-grow flex flex-col">
-            <nav className="flex-1 px-4 space-y-1">
-              <NavItems />
-            </nav>
-          </div>
+          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="ml-auto"
+            onClick={() => setCollapsed(!collapsed)}
+          >
+            {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+          </Button>
+        </div>
 
-          <div className="flex-shrink-0 p-4 border-t border-border">
-            <div className="flex items-center justify-between">
+        {/* Navigation Items */}
+        <div className="mt-6 flex-1 px-2">
+          <nav className="space-y-1">
+            <NavItems />
+          </nav>
+        </div>
+
+        {/* User Section */}
+        <div className="flex-shrink-0 p-4 border-t border-border">
+          <div className={cn("flex items-center justify-between", collapsed && "justify-center")}>
+            {!collapsed && (
               <div className="flex items-center space-x-3">
                 <Avatar className="h-8 w-8">
                   <AvatarFallback className="bg-primary text-primary-foreground text-sm">
@@ -105,8 +130,10 @@ export function Navigation() {
                   <p className="text-xs text-muted-foreground capitalize">{user?.role || "User"}</p>
                 </div>
               </div>
-              <div className="flex items-center space-x-1">
-                <ThemeToggle />
+            )}
+            <div className="flex items-center space-x-1">
+              <ThemeToggle />
+              {!collapsed && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
@@ -131,13 +158,13 @@ export function Navigation() {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-              </div>
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Navigation (unchanged) */}
       <div className="md:hidden">
         <div className="flex items-center justify-between p-4 border-b bg-card">
           <div className="flex items-center space-x-2">
