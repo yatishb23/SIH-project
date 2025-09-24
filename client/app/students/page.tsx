@@ -36,10 +36,9 @@ export default function DataImportPage() {
       <Navigation />
       <div className="md:pl-64">
         <main className="p-4 md:p-8 space-y-6">
-          <DataImport />
+          <h2 className="text-2xl font-bold tracking-tight">Student Records</h2>
 
           <section>
-            <h2 className="text-xl font-semibold mb-4">Student Records</h2>
             {loading ? (
               <p>Loading...</p>
             ) : students.length === 0 ? (
