@@ -11,3 +11,4 @@ export async function GET() {
     return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
   }
 }
+
